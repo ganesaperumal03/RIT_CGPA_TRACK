@@ -1,0 +1,83 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Ramco Institute of Technology</title>
+
+<body>
+    {% block header %}
+
+    <div class="rit"></div>
+    <div class="home_button" style="max-width: 150px; margin-top: 20px;">
+
+        {% comment %} <a href="{% url 'index' %}" class="btn btn-primary btn-block" style="vertical-align: middle"> {% endcomment %}
+            <span>Home Button</span>
+        </a>
+                        </div>
+    <div class="container">
+        <div class="heading">RIT CGPA CALCULATION</div>
+            <div class="form-all">
+                <div class="admission">
+                <span class="title"><b>Course Details</b></span>
+                <form method="post" action="{% url 'insert_course_details' %}" enctype="multipart/form-data"  >
+                    {% csrf_token %}
+
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Reg_no</th>
+                        <th>batch</th>
+                        <th>student_name</th>
+                        <th>department</th>
+                        <th>semester1</th>
+                        <th>semester2</th>
+                        <th>semester3</th>
+                        <th>semester4</th>
+                        <th>semester5</th>
+                        <th>semester6</th>
+                        <th>semester7</th>
+                        <th>semester8</th>
+                        <th>cgpa</th>
+
+                    </tr>
+                    {% for cgpa in cgpa_track_data %}
+                    <tr>
+                        <th>{{cgpa.Reg_no}}</th>
+                        <th>{{cgpa.batch}}</th>
+                        <th>{{cgpa.student_name}}</th>
+                        <th>{{cgpa.department}}</th>
+                        <th>{{cgpa.semester1}}</th>
+                        <th>{{cgpa.semester2}}</th>
+                        <th>{{cgpa.semester3}}</th>
+                        <th>{{cgpa.semester4}}</th>
+                        <th>{{cgpa.semester5}}</th>
+                        <th>{{cgpa.semester6}}</th>
+                        <th>{{cgpa.semester7}}</th>
+                        <th>{{cgpa.semester8}}</th>
+                        <th>{{cgpa.cgpa}}</th>
+                    </tr>
+                    {% endfor %}
+                </table>
+                
+          
+        </div>
+           
+        <div class="but" style="margin-left: 850px;">
+            <button type="submit"  class="btn btn-primary">Submit</button>
+        </form>
+            
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+
+    {% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title><center>Ramco Institute of Technology</center></title>
+<body>
+
+    <div class="rit"></div>
+    <div class="container">
+
+    <div class="heading"><center>RIT CGPA CALCULATION</center></div>
+
+    <div class="row card-row" style="margin-top: 20px;">
+        <div class=" col-md-6">
+            <a href="{% url 'hod_index'  %}" class="card-link">
+                <div class="card" style="background-color: 005073;">
+                    <div class="card-body">
+                        <span ><center>HOD</center></span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-md-6 ">
+            <a href="{%url 'course_index' %}"  class="card-link">
+                <div class="card" style="background-color: 005073;">
+                    <div class="card-body">
+                        <span ><center>STAFF</center></span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 ">
+            <a href="{%url 'student_index' %}"  class="card-link">
+                <div class="card" style="background-color: 005073;">
+                    <div class="card-body">
+                        <span ><center>STUDENT</center></span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="RIT-Chatbot"
+      agent-id="33accc31-db5a-4fcb-8607-eff8025a91ef"
+      language-code="en"
+    ></df-messenger>
+</div>
+</body>

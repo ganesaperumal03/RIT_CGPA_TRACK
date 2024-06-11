@@ -1,0 +1,75 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Ramco Institute of Technology</title>
+
+<body>
+
+    <div class="rit"></div>
+    <div class="home_button" style="max-width: 150px; margin-top: 20px;">
+
+        {% comment %} <a href="{% url 'index' %}" class="btn btn-primary btn-block" style="vertical-align: middle"> {% endcomment %}
+            <span>Home Button</span>
+        </a>
+                        </div>
+    <div class="container">
+        <div class="heading">RIT CGPA CALCULATION</div>
+            <div class="form-all">
+                <div class="admission">
+                <span class="title"><b>Course Details</b></span>
+                <form method="post" action="{% url 'add_course_grade' %}" enctype="multipart/form-data"  >
+                    {% csrf_token %}
+
+                    <table class="table table-striped table-bordered">
+                        <tr>
+                            <th>Course Code</th>
+                            <th>Course Grade</th>
+                        </tr>
+                        {% for course in course_code_values %}
+                            <tr>
+                                <td>
+                                    <input type="text" name="coursecode{{ forloop.counter }}" class="form-control" value="{{ course.code }}" readonly/>
+                                </td>
+                                <td>
+                                    <input type="text" name="coursegrade{{ forloop.counter }}" class="form-control" placeholder="Enter Course grade" {% if course.grade %} value="{{ course.grade }}" {% endif %} required/>
+                                </td> 
+                                {% comment %} <td>
+                                    <select name="coursegrade{{ forloop.counter }}" class="form-control" required>
+                                        {% if course.grade is not None %}  
+                                            <option value="{{ course.grade }}" disabled selected>{{ course.grade }}</option>
+                                        {% else %}                           
+                                            <option value="" disabled selected>Select</option>
+                                        {% endif %}
+                                        <option value="O">O</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A">A</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                    </select>
+                                </td> {% endcomment %}
+                            </tr>
+                        {% endfor %}
+                    </table> 
+          
+        </div>
+           
+        <div class="but" style="margin-left: 850px;">
+            <button type="submit"  class="btn btn-primary">Submit</button>
+        </form>
+            
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
