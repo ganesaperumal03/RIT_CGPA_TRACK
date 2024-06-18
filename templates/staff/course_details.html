@@ -34,10 +34,10 @@
                     {% for count in total %}
                     <tr>
                         <td>
-                            <input type="text" name="coursecode{{ forloop.counter }}" class="form-control" placeholder="Enter Course Code{{ forloop.counter }}" required/>
+                            <input type="text" name="coursecode{{ forloop.counter }}" class="form-control" placeholder="Enter Course Code{{ forloop.counter }}" {% if course.grade %} value="{{ course.grade }}" {% endif %}required/>
                         </td>
                         <td>
-                            <input type="text" name="coursecredits{{ forloop.counter }}" class="form-control" placeholder="Enter Course Credits" required/>
+                            <input type="text" name="coursecredits{{ forloop.counter }}" class="form-control" placeholder="Enter Course Credits" {% if course.grade %} value="{{ course.grade }}" {% endif %} required/>
                         </td>
                     </tr>
                     {% endfor %}

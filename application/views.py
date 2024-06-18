@@ -44,6 +44,9 @@ def insert_course_details(request):
     semester =course_data['semester']
     Department = course_data['Department']
     course_count =int(course_data['course_count'])
+    course_code_values = []
+    course_grade_data_check= course_grade.objects.filter( Reg_no=Reg_no, batch=batch, semester=semester, department=Department)
+
     if request.method == 'POST':
         form = basic_course_details_form(request.POST)
 
@@ -93,18 +96,17 @@ def add_course_grade(request):
 
     course_grade_data_check = course_details.objects.filter(  batch=batch,semester=semester,Department=Department)
     
-    
     if not course_grade_data_check:
         return HttpResponse("Not updating course code and course credits ", status=400)
 
     course_grade_data = get_object_or_404(course_details, batch=batch,semester=semester,Department=Department)
 
     
-    course_grade_data_check= course_grade.objects.filter( Reg_no=Reg_no, batch=batch, semester=semester,student_name=student_name, department=Department)
+    course_grade_data_check= course_grade.objects.filter( Reg_no=Reg_no, batch=batch, semester=semester, department=Department)
+    print(course_grade_data_check)
     
     if course_grade_data_check:
-        course_grade_data_value = get_object_or_404(course_grade, Reg_no=Reg_no, semester=semester,batch=batch, student_name=student_name, department=Department)
-    
+        course_grade_data_value = get_object_or_404(course_grade, Reg_no=Reg_no, semester=semester,batch=batch, department=Department)
     
 
     course_count_data=int(course_grade_data.course_count)
@@ -113,10 +115,14 @@ def add_course_grade(request):
     for i in range(1, course_count_data + 1):
         course_code_attr = f'coursecode{i}'
         course_grade_attr = f'coursegrade{i}'
+        print(course_grade_attr)
 
         course_code_attr = getattr(course_grade_data, course_code_attr, None)
         if course_grade_data_check:
             course_grade_attr = getattr(course_grade_data_value, course_grade_attr, None)
+            print(course_grade_attr)
+        else:
+            course_grade_attr=None
             
         if course_code_attr and course_grade_attr is not None:
             course_code_values.append({"code":course_code_attr,'grade':course_grade_attr})
@@ -170,7 +176,7 @@ def add_course_grade(request):
                 grade_update.coursegrade12 = form.cleaned_data['coursegrade12']
                 grade_update.save()
                 # Grade dictionary
-            grade_dict = {"O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5}
+            grade_dict = {"O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5, "UL": 0}
             
             # Initialize variables for credits and grade values
             total_credits = 0
@@ -208,6 +214,8 @@ def add_course_grade(request):
             # Calculate GPA
             if total_credits == 0 or not grade_values:
                 return HttpResponse("Error in calculating GPA: No valid course data.", status=400)
+            print('credits_values',credits_values)
+            print('grade_values',grade_values)
 
             weighted_sum = sum(credits_values[i] * grade_values[i] for i in range(len(credits_values)))
             gpa = weighted_sum / total_credits
@@ -218,6 +226,9 @@ def add_course_grade(request):
             form = cgpa_track_form(request.POST)
             cgpa_value_check = cgpa_track.objects.filter( Reg_no=Reg_no, batch=batch, student_name=student_name, department=Department)
             if cgpa_value_check:
+                print(f"Total Credits: {total_credits}")
+                print(f"GPA: {gpa}")
+                print("--------------------------------------")
                 cgpa_value = get_object_or_404(cgpa_track, Reg_no=Reg_no, batch=batch, student_name=student_name, department=Department)
                 sem1 = float(cgpa_value.semester1) if cgpa_value.semester1 is not None else None
                 sem2 = float(cgpa_value.semester2) if cgpa_value.semester2 is not None else None
@@ -227,28 +238,7 @@ def add_course_grade(request):
                 sem6 = float(cgpa_value.semester6) if cgpa_value.semester6 is not None else None
                 sem7 = float(cgpa_value.semester7) if cgpa_value.semester7 is not None else None
                 sem8 = float(cgpa_value.semester8) if cgpa_value.semester8 is not None else None
-                if sem8 is not None:
-                    cgpa=(sem1+sem2+sem3+sem4+sem5+sem6+sem7+sem8)/8
-                elif sem7 is not None:
-                    cgpa=(sem1+sem2+sem3+sem4+sem5+sem6+sem7)/7
-                elif sem6 is not None:
-                    cgpa=(sem1+sem2+sem3+sem4+sem5+sem6)/6
-                elif sem5 is not None:
-                    cgpa=(sem1+sem2+sem3+sem4+sem5)/5
-                elif sem4 is not None:
-                    cgpa=(sem1+sem2+sem3+sem4)/4
-                elif sem3 is not None:
-                    cgpa=(sem1+sem2+sem3)/3
-                elif sem2 is not None:
-                    cgpa=(sem1+sem2)/2
-                elif sem1 is not None:
-                    cgpa=sem1
-
-                cgpa_value.batch = batch 
-                cgpa_value.department = Department
-                cgpa_value.student_name = student_name
-                cgpa_value.Reg_no = Reg_no
-                cgpa_value.cgpa = cgpa
+                
 
                 if semester=='1st_semester':
                     cgpa_value.semester1 = gpa
@@ -260,7 +250,8 @@ def add_course_grade(request):
                     cgpa_value.semester7 = sem7
                     cgpa_value.semester8 = sem8
 
-                elif semester=='2st_semester':
+
+                elif semester=='2nd_semester':
                     cgpa_value.semester1 = sem1
                     cgpa_value.semester2 = gpa
                     cgpa_value.semester3 = sem3
@@ -323,10 +314,41 @@ def add_course_grade(request):
                     cgpa_value.semester6 = sem6
                     cgpa_value.semester7 = sem7
                     cgpa_value.semester8 = gpa
+                sem1 = float(cgpa_value.semester1) if cgpa_value.semester1 is not None else None
+                sem2 = float(cgpa_value.semester2) if cgpa_value.semester2 is not None else None
+                sem3 = float(cgpa_value.semester3) if cgpa_value.semester3 is not None else None
+                sem4 = float(cgpa_value.semester4) if cgpa_value.semester4 is not None else None
+                sem5 = float(cgpa_value.semester5) if cgpa_value.semester5 is not None else None
+                sem6 = float(cgpa_value.semester6) if cgpa_value.semester6 is not None else None
+                sem7 = float(cgpa_value.semester7) if cgpa_value.semester7 is not None else None
+                sem8 = float(cgpa_value.semester8) if cgpa_value.semester8 is not None else None
+                if sem8 is not None:
+                    cgpa=(sem1+sem2+sem3+sem4+sem5+sem6+sem7+sem8)/8
+                elif sem7 is not None:
+                    cgpa=(sem1+sem2+sem3+sem4+sem5+sem6+sem7)/7
+                elif sem6 is not None:
+                    cgpa=(sem1+sem2+sem3+sem4+sem5+sem6)/6
+                elif sem5 is not None:
+                    cgpa=(sem1+sem2+sem3+sem4+sem5)/5
+                elif sem4 is not None:
+                    cgpa=(sem1+sem2+sem3+sem4)/4
+                elif sem3 is not None:
+                    cgpa=(sem1+sem2+sem3)/3
+                elif sem2 is not None:
+                    cgpa=(sem1+sem2)/2
+                elif sem1 is not None:
+                    cgpa=sem1
+                print('update',cgpa)
 
+                cgpa_value.batch = batch 
+                cgpa_value.department = Department
+                cgpa_value.student_name = student_name
+                cgpa_value.Reg_no = Reg_no
+                cgpa_value.cgpa = cgpa
                 cgpa_value.save()
                 return redirect('student_index')
             else:
+                cgpa=gpa
                 if form.is_valid():
                     user = form.save(commit=False)
                     user.batch = batch 

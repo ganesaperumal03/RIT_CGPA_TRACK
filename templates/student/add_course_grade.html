@@ -31,29 +31,28 @@
                             <th>Course Grade</th>
                         </tr>
                         {% for course in course_code_values %}
-                            <tr>
-                                <td>
-                                    <input type="text" name="coursecode{{ forloop.counter }}" class="form-control" value="{{ course.code }}" readonly/>
-                                </td>
-                                <td>
-                                    <input type="text" name="coursegrade{{ forloop.counter }}" class="form-control" placeholder="Enter Course grade" {% if course.grade %} value="{{ course.grade }}" {% endif %} required/>
-                                </td> 
-                                {% comment %} <td>
-                                    <select name="coursegrade{{ forloop.counter }}" class="form-control" required>
-                                        {% if course.grade is not None %}  
-                                            <option value="{{ course.grade }}" disabled selected>{{ course.grade }}</option>
-                                        {% else %}                           
-                                            <option value="" disabled selected>Select</option>
-                                        {% endif %}
-                                        <option value="O">O</option>
-                                        <option value="A+">A+</option>
-                                        <option value="A">A</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B">B</option>
-                                        <option value="C">C</option>
-                                    </select>
-                                </td> {% endcomment %}
-                            </tr>
+                        <tr>
+                            <td>
+                                <input type="text" name="coursecode{{ forloop.counter }}" class="form-control" value="{{ course.code }}" readonly/>
+                            </td>
+                            <td>
+                                <select name="coursegrade{{ forloop.counter }}" class="form-control" required>
+                                    {% if course.grade %}
+                                        <option value="{{ course.grade }}" selected>{{ course.grade }}</option>
+                                    {% else %}
+                                        <option value="" disabled selected>Select</option>
+                                    {% endif %}
+                                    <option value="O" {% if course.grade == 'O' %}selected{% endif %}>O</option>
+                                    <option value="A+" {% if course.grade == 'A+' %}selected{% endif %}>A+</option>
+                                    <option value="A" {% if course.grade == 'A' %}selected{% endif %}>A</option>
+                                    <option value="B+" {% if course.grade == 'B+' %}selected{% endif %}>B+</option>
+                                    <option value="B" {% if course.grade == 'B' %}selected{% endif %}>B</option>
+                                    <option value="C" {% if course.grade == 'C' %}selected{% endif %}>C</option>
+                                    <option value="UL" {% if course.grade == 'UL' %}selected{% endif %}>UL</option>
+
+                                </select>
+                            </td>
+                        </tr>
                         {% endfor %}
                     </table> 
           

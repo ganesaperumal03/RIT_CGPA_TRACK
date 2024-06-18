@@ -18,4 +18,4 @@ class cgpa_track_form(forms.ModelForm):
     class Meta:
         model = cgpa_track
         fields = '__all__'
-        exclude = ['department','batch','semester1','Reg_no','student_name','semester2','semester3','semester4','semester5','semester6','semester7','semester8'] 
+        exclude = ['department','batch','semester1','Reg_no','student_name','semester2','semester3','semester4','semester5','semester6','semester7','semester8','cgpa'] 
